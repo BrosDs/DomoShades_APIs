@@ -8,7 +8,8 @@ public class DefaultRouterHandler extends Application{
     @Override
     public Restlet createInboundRoot() {
         Router router = new Router(getContext());
-        router.attachDefault(it.unimore.awd.ShadesAPI.UserResource.class);
+        //router.attachDefault();
+        router.attach("/user",it.unimore.awd.ShadesAPI.UserResource.class);
 
         return router;
     }
