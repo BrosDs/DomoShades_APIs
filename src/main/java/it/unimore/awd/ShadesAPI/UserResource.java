@@ -1,5 +1,6 @@
 package it.unimore.awd.ShadesAPI;
 
+import com.google.gson.GsonBuilder;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
@@ -22,13 +23,16 @@ public class UserResource extends ServerResource {
     @Put
     public String insert_user(){
 
+        /*
+        * TODO: Controllare che non inserisca se è già presente
+        * */
         User usr = new User();
         usr.setEmail(getQuery().getValues("email"));
         usr.setFirst_name(getQuery().getValues("first_name"));
         usr.setLast_name(getQuery().getValues("last_name"));
         usr.setProfile_pic(getQuery().getValues("profile_pic"));
 
-        ofy().save().entity(usr);
+        ofy().save().entity(usr).now();
         return get_user_by_email(usr.getEmail());
     }
 
@@ -47,7 +51,7 @@ public class UserResource extends ServerResource {
     private String get_user_by_email(String email) {
 
         User usr = ofy().load().type(User.class).id(email).now();
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(usr);
     }
 }
