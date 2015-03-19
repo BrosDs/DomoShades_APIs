@@ -1,8 +1,11 @@
 package it.unimore.awd.ShadesAPI;
 
+import com.google.apphosting.datastore.DatastoreV4;
 import com.google.gson.GsonBuilder;
+import com.googlecode.objectify.cmd.Query;
 import it.unimore.awd.ShadesAPI.Classes.Home;
 import it.unimore.awd.ShadesAPI.Classes.User;
+import org.restlet.Response;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
@@ -45,7 +48,12 @@ public class HomeResource extends ServerResource {
             house.setCountry(getQueryValue("country"));
             house.setAddress(getQueryValue("address"));
 
-            //TODO: Controllare che non si stia per inserire una casa uguale ad una già presente
+
+            List<Home> h = ofy().load().type(Home.class).ancestor(usr).list();
+            /** TODO: Controllare che la casa che si sta inserendo non esista già
+             * */
+
+
 
             ofy().save().entity(house).now();
 
@@ -61,9 +69,9 @@ public class HomeResource extends ServerResource {
     public String remove_house() {
 
         try {
-            User own = null;
+            User own;
             own = ofy().load().type(User.class).id(getKeyValue("owner")).now();
-            Long id = Long.parseLong(getQueryValue("id"));
+            Long id = Long.parseLong(getKeyValue("id"));
 
             ofy().delete().type(Home.class).parent(own).id(id).now();
 
