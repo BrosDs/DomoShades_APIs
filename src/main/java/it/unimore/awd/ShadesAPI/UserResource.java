@@ -10,48 +10,77 @@ import it.unimore.awd.ShadesAPI.Classes.User;
 import static it.unimore.awd.ShadesAPI.OfyService.ofy;
 
 public class UserResource extends ServerResource {
-
     @Get
-    public String get_user() {
-
-        String email;
-        email = getQuery().getValues("email");
-
-        return get_user_by_email(email);
+    public String getUser() {
+        try {
+            String email;
+            email = getKeyValue("email");
+            return getUserByEmail(email);
+        } catch (error error) {
+            return error.toString();
+        }
     }
 
     @Put
-    public String insert_user(){
+    /**
+     * Insert the user if it doesn't exists or returns user's info otherwise
+     * */
+     public String insertUser(){
 
-        /*
-        * TODO: Controllare che non inserisca se è già presente
-        * */
-        User usr = new User();
-        usr.setEmail(getQuery().getValues("email"));
-        usr.setFirst_name(getQuery().getValues("first_name"));
-        usr.setLast_name(getQuery().getValues("last_name"));
-        usr.setProfile_pic(getQuery().getValues("profile_pic"));
+        try {
+            User newUser = new User();
+            newUser.setEmail(getKeyValue("email"));
+            newUser.setFirst_name(getQueryValue("first_name"));
+            newUser.setLast_name(getQueryValue("last_name"));
+            newUser.setProfile_pic(getQueryValue("profile_pic"));
 
-        ofy().save().entity(usr).now();
-        return get_user_by_email(usr.getEmail());
+            /** If exists don't change */
+            if(ofy().load().type(User.class).id(newUser.getEmail()).now()!=null)
+                return getUserByEmail(newUser.getEmail());
+
+            ofy().save().entity(newUser).now();
+            return getUserByEmail(newUser.getEmail());
+
+        } catch (error error) {
+            return error.toString();
+        }
     }
 
     @Delete
-    public String delete_user(){
+    /**
+     * returns the deleted user if there is a user to delete, null otherwise
+     * */
+    public String deleteUser(){
+        try {
+            String email;
+            email=getKeyValue("email");
 
-        String email;
-        email=getQuery().getValues("email");
-
-        String deleted_user=get_user_by_email(email);
-        ofy().delete().entity(ofy().load().type(User.class).id(email).now());
-        return deleted_user;
+            if(ofy().load().type(User.class).id(email).now()!=null) {
+                String deleted_user = getUserByEmail(email);
+                ofy().delete().entity(ofy().load().type(User.class).id(email).now());
+                return deleted_user;
+            }
+            return new error("no user to delete").toString();
+        } catch (error error) {
+            return error.toString();
+        }
     }
 
 
-    private String get_user_by_email(String email) {
-
+    /** Private methods **/
+    private String getUserByEmail(String email) {
         User usr = ofy().load().type(User.class).id(email).now();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(usr);
+    }
+    private String getKeyValue(String key_name) throws error {
+        if(getQueryValue(key_name)!=null) {
+            String key_val = getQueryValue(key_name);
+            System.out.println(key_val);
+            if (key_val.isEmpty())
+                throw new error("No key value found");
+            return key_val;
+        }else
+            throw new error("Key name not found");
     }
 }
