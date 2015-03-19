@@ -1,11 +1,9 @@
 package it.unimore.awd.ShadesAPI;
 
-import com.google.apphosting.datastore.DatastoreV4;
 import com.google.gson.GsonBuilder;
 import com.googlecode.objectify.cmd.Query;
 import it.unimore.awd.ShadesAPI.Classes.Home;
 import it.unimore.awd.ShadesAPI.Classes.User;
-import org.restlet.Response;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
@@ -35,29 +33,39 @@ public class HomeResource extends ServerResource {
     @Put
     public String new_house() {
         try {
-            Home house = new Home();
-            User usr = null;
+            Home newHome = new Home();
+            User usr;
+
 
             usr = ofy().load().type(User.class).id(getKeyValue("owner")).now();
 
-            house.setOwner(usr);
+            newHome.setOwner(usr);
             //Id
-            house.setDescription(getQueryValue("description"));
-            house.setCity(getQueryValue("city"));
-            house.setCap(Integer.parseInt(getQueryValue("cap")));
-            house.setCountry(getQueryValue("country"));
-            house.setAddress(getQueryValue("address"));
+            newHome.setDescription(getQueryValue("description"));
+            newHome.setCity(getQueryValue("city"));
+            newHome.setCap(Integer.parseInt(getQueryValue("cap")));
+            newHome.setCountry(getQueryValue("country"));
+            newHome.setAddress(getQueryValue("address"));
 
 
-            List<Home> h = ofy().load().type(Home.class).ancestor(usr).list();
-            /** TODO: Controllare che la casa che si sta inserendo non esista già
-             * */
+            Query<Home> h = ofy().load().type(Home.class).ancestor(usr);
+            h.filter("description", newHome.getDescription())
+                    .filter("city", newHome.getCity())
+                    .filter("cap", newHome.getCap())
+                    .filter("country", newHome.getCountry())
+                    .filter("address", newHome.getAddress());
+
+            for(Home home : h){
+                /** home is equal to newHouse */
+                return new error("house already saved").toString();
+            }
 
 
 
-            ofy().save().entity(house).now();
 
-            Home fetched = ofy().load().entity(house).now();
+            ofy().save().entity(newHome).now();
+
+            Home fetched = ofy().load().entity(newHome).now();
             return get_house(fetched);
 
         } catch (error error) {
@@ -91,7 +99,6 @@ public class HomeResource extends ServerResource {
     private String getKeyValue(String key_name) throws error {
         if(getQueryValue(key_name)!=null) {
             String key_val = getQueryValue(key_name);
-            System.out.println(key_val);
             if (key_val.isEmpty())
                 throw new error("No key value found");
             return key_val;

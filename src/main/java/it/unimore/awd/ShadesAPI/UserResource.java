@@ -76,7 +76,6 @@ public class UserResource extends ServerResource {
     private String getKeyValue(String key_name) throws error {
         if(getQueryValue(key_name)!=null) {
             String key_val = getQueryValue(key_name);
-            System.out.println(key_val);
             if (key_val.isEmpty())
                 throw new error("No key value found");
             return key_val;

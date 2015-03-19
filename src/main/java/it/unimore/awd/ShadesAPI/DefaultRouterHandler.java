@@ -22,6 +22,8 @@ public class DefaultRouterHandler extends Application{
         *   /home?owner=brosds@gmail.com&description=CasaMantova&city=Mantova&cap=46100&country=Mantova&address=Via+Principe+Amedeo+,+6
         */
 
+        router.attach("/floor",it.unimore.awd.ShadesAPI.FloorResource.class);
+
 
 
         return router;

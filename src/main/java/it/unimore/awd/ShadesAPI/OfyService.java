@@ -11,6 +11,7 @@ public class OfyService {
     static {
         factory().register(User.class);
         factory().register(Home.class);
+        factory().register(Floor.class);
     }
 
     public static Objectify ofy() {
