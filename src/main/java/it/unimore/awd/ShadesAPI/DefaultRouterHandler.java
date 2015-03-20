@@ -15,6 +15,7 @@ public class DefaultRouterHandler extends Application{
         router.attach("/user",it.unimore.awd.ShadesAPI.UserResource.class);
         router.attach("/home",it.unimore.awd.ShadesAPI.HomeResource.class);
         router.attach("/floor",it.unimore.awd.ShadesAPI.FloorResource.class);
+        router.attach("/room",it.unimore.awd.ShadesAPI.RoomResource.class);
 
         return router;
     }

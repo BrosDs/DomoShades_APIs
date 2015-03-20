@@ -35,15 +35,16 @@ public class FloorResource extends ServerResource{
         }
     }
 
+    /**
+     * /floor?  owner=owner_email_address&
+     *          home=home_id_number&
+     *          id=floor_number&
+     *          type=floor_type&
+     *          canvas=canvas_value
+     **/
     @Put
     public String putFloor(){
-        /**
-         * /floor?  owner=owner_email_address&
-         *          home=home_id_number&
-         *          id=floor_number&
-         *          type=floor_type&
-         *          canvas=canvas_value
-         **/
+
         try{
             Home home;
             home=HomeResource.getHome(getKeyValue("owner"),Long.parseLong(getKeyValue("home")));
@@ -57,7 +58,6 @@ public class FloorResource extends ServerResource{
             ofy().save().entity(newFloor).now();
             Floor fetched = ofy().load().entity(newFloor).now();
             return getFloor(fetched);
-
 
         }catch (error error) {
             return error.toString();
