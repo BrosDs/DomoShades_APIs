@@ -3,6 +3,7 @@ package it.unimore.awd.ShadesAPI;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
+import org.restlet.routing.TemplateRoute;
 
 public class DefaultRouterHandler extends Application{
 
@@ -10,13 +11,20 @@ public class DefaultRouterHandler extends Application{
     public Restlet createInboundRoot() {
         Router router = new Router(getContext());
 
-        // router.attachDefault();
+        /** Router handlers for default resources **/
+        router.attach("/user",      UserResource.class);
+        router.attach("/home",      HomeResource.class);
+        router.attach("/floor",     FloorResource.class);
+        router.attach("/room",      RoomResource.class);
+        router.attach("/window",    WindowResource.class);
 
-        router.attach("/user",it.unimore.awd.ShadesAPI.UserResource.class);
-        router.attach("/home",it.unimore.awd.ShadesAPI.HomeResource.class);
-        router.attach("/floor",it.unimore.awd.ShadesAPI.FloorResource.class);
-        router.attach("/room",it.unimore.awd.ShadesAPI.RoomResource.class);
-
+        /** Custom methods for specific APIs **/
+        /*
+        router.attach("/close_all_home", null);
+        router.attach("/close_all_floor",null);
+        router.attach("/close_all_room",null);
+        router.attach("/insert_new_rule",null):
+        */
         return router;
     }
 }
