@@ -16,11 +16,13 @@ import static it.unimore.awd.ShadesAPI.OfyService.ofy;
 
 public class HomeResource extends ServerResource {
 
+    /**
+     * /home? owner=owner_email_address
+     */
     @Get
-    public String get_houses_list() {
+    public String getHousesList() {
         try {
-            User usr;
-            usr = ofy().load().type(User.class).id(getKeyValue("owner")).now();
+            User usr = UserResource.getUser(getKeyValue("owner"));
             List<Home> h = ofy().load().type(Home.class).ancestor(usr).list();
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             return gson.toJson(h);
@@ -30,17 +32,21 @@ public class HomeResource extends ServerResource {
         }
     }
 
+    /**
+     *   /home? owner=owner_email_address&
+     *          description=home_description&
+     *          city=city_name&
+     *          cap=city_postal_code&
+     *          country=where_i_live&
+     *          address=home_address_plus_civic_number
+     */
     @Put
-    public String new_house() {
+    public String putHouse() {
         try {
             Home newHome = new Home();
-            User usr;
-
-
-            usr = ofy().load().type(User.class).id(getKeyValue("owner")).now();
+            User usr = UserResource.getUser(getKeyValue("owner"));
 
             newHome.setOwner(usr);
-            //Id
             newHome.setDescription(getQueryValue("description"));
             newHome.setCity(getQueryValue("city"));
             newHome.setCap(Integer.parseInt(getQueryValue("cap")));
@@ -55,35 +61,35 @@ public class HomeResource extends ServerResource {
                     .filter("country", newHome.getCountry())
                     .filter("address", newHome.getAddress());
 
+            /*TODO: Optimize here*/
             for(Home home : h){
-                /** home is equal to newHouse */
                 return new error("house already saved").toString();
             }
-
-
-
 
             ofy().save().entity(newHome).now();
 
             Home fetched = ofy().load().entity(newHome).now();
-            return get_house(fetched);
+            return getHouse(fetched);
 
         } catch (error error) {
             return error.toString();
         }
     }
 
+    /**
+     * /home? owner=owner_email_address&
+     *        id=home_id_number
+     */
     @Delete
-    public String remove_house() {
+    public String deleteHouse() {
 
         try {
-            User own;
-            own = ofy().load().type(User.class).id(getKeyValue("owner")).now();
+            User own = UserResource.getUser(getKeyValue("owner"));
             Long id = Long.parseLong(getKeyValue("id"));
 
             ofy().delete().type(Home.class).parent(own).id(id).now();
 
-            return get_houses_list();
+            return getHousesList();
 
         } catch (error error) {
             return error.toString();
@@ -91,8 +97,13 @@ public class HomeResource extends ServerResource {
     }
 
 
+    public static Home getHome(String owner, Long id){
+        User own = UserResource.getUser(owner);
+        return ofy().load().type(Home.class).parent(own).id(id).now();
+    }
+
     /** Private methods **/
-    private String get_house(Home house){
+    private String getHouse(Home house){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(house);
     }

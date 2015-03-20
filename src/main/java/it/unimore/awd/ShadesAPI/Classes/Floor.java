@@ -10,19 +10,21 @@ import com.googlecode.objectify.annotation.Parent;
 
 @Entity
 public class Floor {
-    @Id long id;
+    @Id Long id;
     @Parent Ref<Home> house;
     String canvas;
+    Integer type;
 
     public Floor(){
 
     }
 
-    public Floor(long id, Home house, String canvas){
+    public Floor(Long id, Home house, String canvas, Integer type){
         super();
         this.id=id;
         this.house=Ref.create(house);
         this.canvas=canvas;
+        this.type=type;
     }
 
     public String getHouse(){
@@ -34,12 +36,11 @@ public class Floor {
         this.house = Ref.create(house);
     }
 
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,5 +50,13 @@ public class Floor {
 
     public void setCanvas(String canvas) {
         this.canvas = canvas;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

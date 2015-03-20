@@ -10,6 +10,10 @@ import it.unimore.awd.ShadesAPI.Classes.User;
 import static it.unimore.awd.ShadesAPI.OfyService.ofy;
 
 public class UserResource extends ServerResource {
+
+    /**
+     *   /user? email=user_email_address&
+     **/
     @Get
     public String getUser() {
         try {
@@ -21,11 +25,14 @@ public class UserResource extends ServerResource {
         }
     }
 
-    @Put
     /**
-     * Insert the user if it doesn't exists or returns user's info otherwise
-     * */
-     public String insertUser(){
+     *   /user? email=user_email_address&
+     *          first_name=user_first_name&
+     *          last_name=user_last_name&
+     *          profile_pic=user_profile_pic_link
+     **/
+    @Put
+    public String putUser(){
 
         try {
             User newUser = new User();
@@ -46,10 +53,10 @@ public class UserResource extends ServerResource {
         }
     }
 
-    @Delete
     /**
-     * returns the deleted user if there is a user to delete, null otherwise
-     * */
+     *   /user? email=user_email_address&
+     **/
+    @Delete
     public String deleteUser(){
         try {
             String email;
@@ -66,6 +73,10 @@ public class UserResource extends ServerResource {
         }
     }
 
+
+    public static User getUser(String email){
+        return ofy().load().type(User.class).id(email).now();
+    }
 
     /** Private methods **/
     private String getUserByEmail(String email) {
