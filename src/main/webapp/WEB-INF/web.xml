@@ -14,7 +14,7 @@
     <!-- Catch all requests -->
     <servlet-mapping>
         <servlet-name>DomoShades</servlet-name>
-        <url-pattern>/api</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
     <!-- ObjectifyFilter -->
@@ -24,6 +24,6 @@
     </filter>
     <filter-mapping>
         <filter-name>ObjectifyFilter</filter-name>
-        <url-pattern>/api</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 </web-app>
