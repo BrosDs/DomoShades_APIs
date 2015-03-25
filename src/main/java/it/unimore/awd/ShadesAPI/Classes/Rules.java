@@ -77,4 +77,23 @@ public class Rules {
     public void setClosedPercentage(Integer closedPercentage) {
         this.closedPercentage = closedPercentage;
     }
+
+    public boolean equals(Rules r){
+        if(this.name.equals(r.name) &&
+                this.priority.equals(r.priority) &&
+                this.closedPercentage.equals(r.closedPercentage) &&
+                this.startTime.getHour().equals(r.startTime.getHour()) &&
+                this.startTime.getMinutes().equals(r.startTime.getMinutes()) &&
+                this.endTime.getHour().equals(r.endTime.getHour()) &&
+                this.endTime.getMinutes().equals(r.endTime.getMinutes())){
+            return true;
+        }
+        return false;
+    }
+
+    public int hashCode(){
+        return this.name.hashCode();
+    }
+
+
 }

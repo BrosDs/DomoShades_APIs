@@ -9,7 +9,10 @@ import org.restlet.resource.Delete;
 import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
 
+import java.util.Iterator;
 import java.util.List;
+
+import static it.unimore.awd.ShadesAPI.OfyService.ofy;
 
 public class RulesResource extends ServerResource{
 
@@ -44,7 +47,9 @@ public class RulesResource extends ServerResource{
             newRuleList.add(newRule);
             w.setRulesLists(newRuleList);
 
-            return new WindowResource().putWindow();
+            ofy().save().entity(w).now();
+            return WindowResource.getWindow(w);
+
         } catch (error error){
             return error.toString();
         }
@@ -65,10 +70,21 @@ public class RulesResource extends ServerResource{
 
             Rules newRule = new Rules(getKeyValue("rule_name"),rulePriority,getKeyValue("rule_start"),getKeyValue("rule_end"),ruleClosed);
             List<Rules> newRuleList = w.getRulesLists();
-            newRuleList.remove(newRule);
+            Iterator<Rules> i = newRuleList.iterator();
+
+            while(i.hasNext()){
+                Rules r = i.next();
+                if(r.equals(newRule)) {
+                    i.remove();
+                    break;
+                }
+            }
+
+
             w.setRulesLists(newRuleList);
 
-            return new WindowResource().putWindow();
+            ofy().save().entity(w).now();
+            return WindowResource.getWindow(w);
         } catch (error error){
             return error.toString();
         }

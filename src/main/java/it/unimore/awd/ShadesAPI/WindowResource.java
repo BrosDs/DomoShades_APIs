@@ -90,7 +90,7 @@ public class WindowResource extends ServerResource {
     }
 
     /** Private methods **/
-    private String getWindow(Window w){
+    public static String getWindow(Window w){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(w);
     }
