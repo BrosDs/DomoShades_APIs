@@ -1,8 +1,6 @@
 package it.unimore.awd.ShadesAPI;
 
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import it.unimore.awd.ShadesAPI.Classes.Rules;
 import it.unimore.awd.ShadesAPI.Classes.Window;
 import org.restlet.resource.Delete;
@@ -91,10 +89,6 @@ public class RulesResource extends ServerResource{
     }
 
     /** Private methods **/
-    private String getRule(Rules r){
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(r);
-    }
 
     private String getKeyValue(String key_name) throws error {
         if(getQueryValue(key_name)!=null) {

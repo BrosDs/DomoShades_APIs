@@ -17,6 +17,7 @@ public class DefaultRouterHandler extends Application{
         router.attach("/api/room",      RoomResource.class);
         router.attach("/api/window",    WindowResource.class);
         router.attach("/api/rule",      RulesResource.class);
+        router.attach("/api/custom",    CustomResource.class);
 
         /** Custom methods for specific APIs **/
 
