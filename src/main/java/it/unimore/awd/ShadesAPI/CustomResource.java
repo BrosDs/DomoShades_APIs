@@ -32,23 +32,27 @@ public class CustomResource extends ServerResource{
             Home home = ofy().load().type(Home.class).parent(usr).id(getKeyValueL("home")).now();
 
             if(type==0){
+                specialHomeRemover(home);
                 specialHome(home,rule);
                 return "Home";
             }
 
             Floor floor = ofy().load().type(Floor.class).parent(home).id(getKeyValueL("id")).now();
             if(type==1){
+                specialFloorRemover(floor);
                 specialFloor(floor,rule);
                 return "Floor";
             }
 
             Room room = ofy().load().type(Room.class).parent(floor).id(getKeyValueL("room_id")).now();
             if(type==2){
+                specialRoomRemover(room);
                 specialRoom(room,rule);
                 return "Room";
             }
 
             Window window = ofy().load().type(Window.class).parent(room).id(getKeyValueL("window_id")).now();
+            specialWindowRemover(window);
             specialWindow(window,rule);
             return "Window";
 
