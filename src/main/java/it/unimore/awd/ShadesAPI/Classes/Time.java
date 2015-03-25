@@ -14,6 +14,13 @@ public class Time {
         this.minutes=minutes;
     }
 
+    public Time(String time){
+        super();
+        String[] splitted = time.split(":");
+        this.hour=Integer.parseInt(splitted[0]);
+        this.minutes=Integer.parseInt(splitted[1]);
+    }
+
     public Integer getHour() {
         return hour;
     }

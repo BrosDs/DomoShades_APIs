@@ -84,6 +84,11 @@ public class WindowResource extends ServerResource {
         }
     }
 
+    public static Window getWindow(String owner, Long home, Long id, Long roomId, Long window_id){
+        Room room = RoomResource.getRoom(owner, home, id, roomId);
+        return ofy().load().type(Window.class).parent(room).id(window_id).now();
+    }
+
     /** Private methods **/
     private String getWindow(Window w){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

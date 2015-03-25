@@ -3,7 +3,6 @@ package it.unimore.awd.ShadesAPI;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
-import org.restlet.routing.TemplateRoute;
 
 public class DefaultRouterHandler extends Application{
 
@@ -17,8 +16,11 @@ public class DefaultRouterHandler extends Application{
         router.attach("/api/floor",     FloorResource.class);
         router.attach("/api/room",      RoomResource.class);
         router.attach("/api/window",    WindowResource.class);
+        router.attach("/api/rule",      RulesResource.class);
 
         /** Custom methods for specific APIs **/
+
+
         /*
         router.attach("/api/close_all_home", null);
         router.attach("/api/close_all_floor",null);

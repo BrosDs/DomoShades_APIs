@@ -20,6 +20,24 @@ public class Rules {
         this.closedPercentage = closedPercentage;
     }
 
+    public Rules(String name, Integer priority, String startTime, String endTime, Integer closedPercentage) {
+        super();
+        this.name = name;
+        this.priority = priority;
+        this.startTime=new Time(startTime);
+        this.endTime=new Time(endTime);
+        this.closedPercentage = closedPercentage;
+    }
+
+    public Rules(String name, String priority, String startTime, String endTime, String closedPercentage) {
+        super();
+        this.name = name;
+        this.priority = Integer.parseInt(priority);
+        this.startTime=new Time(startTime);
+        this.endTime=new Time(endTime);
+        this.closedPercentage = Integer.parseInt(closedPercentage);
+    }
+
     public String getName() {
         return name;
     }
