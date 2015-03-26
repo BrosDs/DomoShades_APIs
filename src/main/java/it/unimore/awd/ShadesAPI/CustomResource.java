@@ -134,14 +134,11 @@ public class CustomResource extends ServerResource{
 
     /** Special Rules remover **/
     private void specialWindowRemover(Window w){
-        Rules open = new Rules("Always Open", 100, 0, 0, 23, 59, 100);
-        Rules close = new Rules("Always Closed",100,0,0,23,59,100);
-
         List<Rules> rulesList = w.getRulesLists();
         Iterator<Rules> i = rulesList.iterator();
         while(i.hasNext()){
             Rules r = i.next();
-            if(open.equals(r) || close.equals(r)){
+            if(r.getPriority()==100){
                 i.remove();
             }
         }
