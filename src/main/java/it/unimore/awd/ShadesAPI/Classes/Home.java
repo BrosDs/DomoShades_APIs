@@ -92,4 +92,15 @@ public class Home {
         this.address = address;
     }
 
+    public boolean equals(Home h){
+        return this.owner.equals(h.owner) &&
+                this.description.equals(h.description) &&
+                this.city.equals(h.city) &&
+                this.cap == h.cap &&
+                this.country.equals(h.country) &&
+                this.address.equals(h.address);
+    }
+
+    public int hashcode(){ return this.description.hashCode();}
+
 }

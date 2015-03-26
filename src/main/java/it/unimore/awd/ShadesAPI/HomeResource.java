@@ -1,7 +1,6 @@
 package it.unimore.awd.ShadesAPI;
 
 import com.google.gson.GsonBuilder;
-import com.googlecode.objectify.cmd.Query;
 import it.unimore.awd.ShadesAPI.Classes.Home;
 import it.unimore.awd.ShadesAPI.Classes.User;
 import org.restlet.resource.Delete;
@@ -54,17 +53,24 @@ public class HomeResource extends ServerResource {
             newHome.setAddress(getQueryValue("address"));
 
 
-            Query<Home> h = ofy().load().type(Home.class).ancestor(usr);
+            List<Home> homeList = ofy().load().type(Home.class).ancestor(usr).list();
+
+            for(Home home : homeList){
+                if(home.equals(newHome))
+                    return new error("house already saved").toString();
+            }
+
+            /**
             h.filter("description", newHome.getDescription())
                     .filter("city", newHome.getCity())
                     .filter("cap", newHome.getCap())
                     .filter("country", newHome.getCountry())
                     .filter("address", newHome.getAddress());
 
-            /*TODO: Optimize here*/
             for(Home home : h){
                 return new error("house already saved").toString();
             }
+             */
 
             ofy().save().entity(newHome).now();
 
