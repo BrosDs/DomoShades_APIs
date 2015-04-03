@@ -33,6 +33,7 @@ public class HomeResource extends ServerResource {
 
     /**
      *   /home? owner=owner_email_address&
+     *          home=home_id&
      *          description=home_description&
      *          city=city_name&
      *          cap=city_postal_code&
@@ -46,6 +47,7 @@ public class HomeResource extends ServerResource {
             User usr = UserResource.getUser(getKeyValue("owner"));
 
             newHome.setOwner(usr);
+            newHome.setId(Long.parseLong(getQueryValue("home")));
             newHome.setDescription(getQueryValue("description"));
             newHome.setCity(getQueryValue("city"));
             newHome.setCap(Integer.parseInt(getQueryValue("cap")));
@@ -59,18 +61,6 @@ public class HomeResource extends ServerResource {
                 if(home.equals(newHome))
                     return new error("house already saved").toString();
             }
-
-            /**
-            h.filter("description", newHome.getDescription())
-                    .filter("city", newHome.getCity())
-                    .filter("cap", newHome.getCap())
-                    .filter("country", newHome.getCountry())
-                    .filter("address", newHome.getAddress());
-
-            for(Home home : h){
-                return new error("house already saved").toString();
-            }
-             */
 
             ofy().save().entity(newHome).now();
 
