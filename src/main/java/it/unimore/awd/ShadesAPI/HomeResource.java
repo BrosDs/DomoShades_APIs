@@ -47,7 +47,12 @@ public class HomeResource extends ServerResource {
             User usr = UserResource.getUser(getKeyValue("owner"));
 
             newHome.setOwner(usr);
-            newHome.setId(Long.parseLong(getQueryValue("home")));
+
+            try{
+                newHome.setId(Long.parseLong(getKeyValue("home")));
+            }catch(error e){
+            }
+
             newHome.setDescription(getQueryValue("description"));
             newHome.setCity(getQueryValue("city"));
             newHome.setCap(Integer.parseInt(getQueryValue("cap")));
