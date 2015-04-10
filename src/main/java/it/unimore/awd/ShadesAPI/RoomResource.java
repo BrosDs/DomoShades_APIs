@@ -48,11 +48,13 @@ public class RoomResource extends ServerResource {
             Floor floor = FloorResource.getFloor(getKeyValue("owner"),Long.parseLong(getKeyValue("home")),Long.parseLong(getKeyValue("id")));
             Room newRoom = new Room(floor,Long.parseLong(getKeyValue("room_id")),getQueryValue("name"));
 
+            /*
             Room r = ofy().load().entity(newRoom).now();
             if(r==null){
                 ofy().save().entity(newRoom).now();
                 return getRoom(newRoom);
             }
+            */
 
             return new error("room already saved").toString();
         }catch(error error){

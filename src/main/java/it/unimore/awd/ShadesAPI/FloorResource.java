@@ -50,10 +50,12 @@ public class FloorResource extends ServerResource{
             home=HomeResource.getHome(getKeyValue("owner"),Long.parseLong(getKeyValue("home")));
             Floor newFloor = new Floor(Long.parseLong(getKeyValue("id")),home,getQueryValue("canvas"),Integer.parseInt(getQueryValue("type")));
 
+            /*
             Floor f = ofy().load().entity(newFloor).now();
             if(f!=null){
                 return new error("floor already saved").toString();
             }
+            */
 
             ofy().save().entity(newFloor).now();
             Floor fetched = ofy().load().entity(newFloor).now();
