@@ -56,7 +56,9 @@ public class RoomResource extends ServerResource {
             }
             */
 
-            return new error("room already saved").toString();
+            ofy().save().entity(newRoom).now();
+            Room fetched = ofy().load().entity(newRoom).now();
+            return getRoom(fetched);
         }catch(error error){
             return error.toString();
         }
